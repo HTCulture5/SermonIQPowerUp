@@ -1,0 +1,6 @@
+{
+  "name": "SermonIQ",
+  "description": "AI-powered ministry intelligence platform providing real-time sermon analytics, congregation care, anonymous community support, and daily devotional automation.",
+  "requestFramePermissions": ["camera", "microphone", "display-capture"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- SermonIQ Official Favicon & Google Search Site Icon -->
+  <defs>
+    <!-- Cross Gold Gradient for subtle depth while matching the uploaded brand asset -->
+    <linearGradient id="sermoniq-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D4A017" />
+      <stop offset="100%" stop-color="#B8821F" />
+    </linearGradient>
+    <!-- Navy Blue Gradient -->
+    <linearGradient id="sermoniq-navy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#23426D" />
+      <stop offset="100%" stop-color="#182E4D" />
+    </linearGradient>
+  </defs>
+
+  <!-- Clean White Background matching uploaded asset for high-contrast visibility on Google Search & Browser Tabs -->
+  <rect width="512" height="512" fill="#FFFFFF" rx="96" />
+
+  <!-- 5-Bar Ministry Waveform + Golden Latin Cross -->
+  <g id="sermoniq-emblem">
+    <!-- Bar 1: Outer Left Navy Pillar -->
+    <rect x="136" y="192" width="34" height="128" rx="17" fill="url(#sermoniq-navy)" />
+
+    <!-- Bar 2: Inner Left Navy Pillar -->
+    <rect x="188" y="156" width="34" height="200" rx="17" fill="url(#sermoniq-navy)" />
+
+    <!-- Bar 4: Inner Right Navy Pillar -->
+    <rect x="292" y="156" width="34" height="200" rx="17" fill="url(#sermoniq-navy)" />
+
+    <!-- Bar 5: Outer Right Navy Pillar -->
+    <rect x="344" y="192" width="34" height="128" rx="17" fill="url(#sermoniq-navy)" />
+
+    <!-- Central Latin Cross (Bar 3 + Horizontal Crossbar) -->
+    <!-- Vertical Center Beam -->
+    <rect x="239" y="118" width="36" height="276" rx="18" fill="url(#sermoniq-gold)" />
+
+    <!-- Horizontal Crossbar (Intersecting upper quadrant) -->
+    <rect x="191" y="180" width="132" height="34" rx="17" fill="url(#sermoniq-gold)" />
+  </g>
+</svg>

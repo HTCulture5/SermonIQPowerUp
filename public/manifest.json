@@ -1,0 +1,17 @@
+{
+  "short_name": "SermonIQ",
+  "name": "SermonIQ - AI Ministry Intelligence Platform",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 48x48 any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0A0E2A",
+  "theme_color": "#0D1236",
+  "display": "standalone",
+  "orientation": "portrait"
+}

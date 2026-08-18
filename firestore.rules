@@ -1,0 +1,155 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Catch-all Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Validation for UserProfile
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId.size() <= 128 &&
+             data.email is string && data.email.size() <= 256 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 128)) &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 512)) &&
+             (!('role' in data) || (data.role in ['pastor', 'leader', 'member', 'guest', 'admin'])) &&
+             (!('churchName' in data) || (data.churchName is string && data.churchName.size() <= 200)) &&
+             (!('churchAddress' in data) || (data.churchAddress is string && data.churchAddress.size() <= 300)) &&
+             (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 50)) &&
+             (!('subscriptionPlan' in data) || (data.subscriptionPlan is string && data.subscriptionPlan.size() <= 50)) &&
+             (!('tenantId' in data) || (data.tenantId is string && data.tenantId.size() <= 128)) &&
+             (!('twoFactorEnabled' in data) || (data.twoFactorEnabled is bool)) &&
+             (!('dataIsolationMode' in data) || (data.dataIsolationMode in ['strict_tenant', 'standard'])) &&
+             (!('serviceDate' in data) || (data.serviceDate is string && data.serviceDate.size() <= 100)) &&
+             (!('memberCount' in data) || (data.memberCount is string || data.memberCount is number)) &&
+             (!('onboardingCompleted' in data) || (data.onboardingCompleted is bool)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 64)) &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // Validation for ServiceReportEntity
+    function isValidServiceReport(data) {
+      return data.authorId is string && data.authorId == request.auth.uid &&
+             data.summary is string && data.summary.size() <= 10000 &&
+             (!('authorEmail' in data) || (data.authorEmail is string && data.authorEmail.size() <= 256)) &&
+             (!('serviceTitle' in data) || (data.serviceTitle is string && data.serviceTitle.size() <= 200)) &&
+             (!('engagementAnalysis' in data) || (data.engagementAnalysis is string && data.engagementAnalysis.size() <= 10000)) &&
+             (!('themes' in data) || (data.themes is string && data.themes.size() <= 10000)) &&
+             (!('scripture' in data) || (data.scripture is string && data.scripture.size() <= 10000)) &&
+             (!('congregationResponse' in data) || (data.congregationResponse is string && data.congregationResponse.size() <= 10000)) &&
+             (!('recommendations' in data) || (data.recommendations is string && data.recommendations.size() <= 10000)) &&
+             (!('averageEngagement' in data) || (data.averageEngagement is number)) &&
+             (!('peakEngagement' in data) || (data.peakEngagement is number)) &&
+             (!('durationSeconds' in data) || (data.durationSeconds is number)) &&
+             (!('versesCount' in data) || (data.versesCount is number)) &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // Validation for CarePrayerEntity
+    function isValidCarePrayer(data) {
+      return data.category in ['healing', 'family', 'anxiety', 'guidance', 'gratitude', 'general'] &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 2000 &&
+             (!('authorId' in data) || (data.authorId is string && data.authorId.size() <= 128)) &&
+             (!('isAnonymous' in data) || (data.isAnonymous is bool)) &&
+             (!('prayerCount' in data) || (data.prayerCount is number)) &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // Validation for DonationRecord
+    function isValidDonation(data) {
+      return data.amount is number && data.amount > 0 &&
+             data.fund is string && data.fund.size() <= 128 &&
+             (!('donorId' in data) || (data.donorId is string && data.donorId.size() <= 128)) &&
+             (!('frequency' in data) || (data.frequency in ['one-time', 'weekly', 'bi-weekly', 'monthly'])) &&
+             (!('isAnonymous' in data) || (data.isAnonymous is bool)) &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // Validation for ChurchLeadEntity
+    function isValidChurchLead(data) {
+      return data.firstName is string && data.firstName.size() > 0 && data.firstName.size() <= 100 &&
+             data.lastName is string && data.lastName.size() > 0 && data.lastName.size() <= 100 &&
+             data.address is string && data.address.size() > 0 && data.address.size() <= 300 &&
+             data.phoneNumber is string && data.phoneNumber.size() > 0 && data.phoneNumber.size() <= 50 &&
+             data.serviceDate is string && data.serviceDate.size() > 0 && data.serviceDate.size() <= 100 &&
+             (data.numberOfMembers is string || data.numberOfMembers is number) &&
+             (!('churchName' in data) || (data.churchName is string && data.churchName.size() <= 200)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 256)) &&
+             (!('selectedSubscription' in data) || (data.selectedSubscription is string && data.selectedSubscription.size() <= 50)) &&
+             (!('status' in data) || (data.status in ['new', 'contacted', 'onboarded'])) &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // USERS COLLECTION
+    match /users/{userId} {
+      allow get: if isSignedIn() && (isOwner(userId) || resource.data.userId == request.auth.uid);
+      allow list: if false; // Block blanket user scanning
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUserProfile(incoming()) && incoming().userId == request.auth.uid;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUserProfile(incoming()) && incoming().userId == existing().userId;
+      allow delete: if isOwner(userId);
+    }
+
+    // SERVICE REPORTS COLLECTION
+    match /service_reports/{reportId} {
+      allow get: if isSignedIn() && (resource.data.authorId == request.auth.uid);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(reportId) && isValidServiceReport(incoming());
+      allow update: if isSignedIn() && isValidId(reportId) && resource.data.authorId == request.auth.uid && isValidServiceReport(incoming()) && incoming().authorId == existing().authorId && incoming().createdAt == existing().createdAt;
+      allow delete: if isSignedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    // CARE PRAYERS COLLECTION
+    match /care_prayers/{prayerId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isValidId(prayerId) && isValidCarePrayer(incoming());
+      allow update: if isValidId(prayerId) && (
+        // Action 1: Pastor/Author full update
+        (isSignedIn() && ('authorId' in resource.data) && resource.data.authorId == request.auth.uid && isValidCarePrayer(incoming())) ||
+        // Action 2: Congregant offering prayer (increment prayerCount)
+        (incoming().diff(existing()).affectedKeys().hasOnly(['prayerCount']) && incoming().prayerCount is number && incoming().prayerCount == existing().prayerCount + 1)
+      );
+      allow delete: if isSignedIn() && ('authorId' in resource.data) && resource.data.authorId == request.auth.uid;
+    }
+
+    // DONATIONS COLLECTION
+    match /donations/{donationId} {
+      allow get: if isSignedIn() && ('donorId' in resource.data) && resource.data.donorId == request.auth.uid;
+      allow list: if isSignedIn() && ('donorId' in resource.data) && resource.data.donorId == request.auth.uid;
+      allow create: if isValidId(donationId) && isValidDonation(incoming());
+      allow update, delete: if false; // Immutable financial ledger
+    }
+
+    // CHURCH SIGNUP LEADS COLLECTION
+    match /church_leads/{leadId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isValidId(leadId) && isValidChurchLead(incoming());
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+  }
+}

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" width="100%" height="100%">
+  <!-- SermonIQ Logo (Vector recreation with Latin Cross) -->
+  <g transform="translate(10, 10)">
+    <!-- Audio Waveform / Ministry Pillar Icon with Golden Cross -->
+    <g transform="translate(10, 15)">
+      <!-- Bar 1 (Leftmost Navy) -->
+      <rect x="0" y="38" width="15" height="54" rx="7.5" fill="#182B49" />
+      <!-- Bar 2 (Inner Left Navy) -->
+      <rect x="24" y="16" width="15" height="98" rx="7.5" fill="#182B49" />
+      <!-- Bar 4 (Inner Right Navy) -->
+      <rect x="72" y="16" width="15" height="98" rx="7.5" fill="#182B49" />
+      <!-- Bar 5 (Rightmost Navy) -->
+      <rect x="96" y="38" width="15" height="54" rx="7.5" fill="#182B49" />
+
+      <!-- Golden Latin Cross -->
+      <!-- Vertical Beam -->
+      <rect x="48" y="0" width="15" height="130" rx="7.5" fill="#BD8825" />
+      <!-- Horizontal Crossbar -->
+      <rect x="20" y="28" width="71" height="15" rx="7.5" fill="#BD8825" />
+    </g>
+
+    <!-- Typography -->
+    <!-- "Sermon" in Serif -->
+    <text x="150" y="96" font-family="'Cormorant Garamond', 'Playfair Display', 'Georgia', serif" font-size="104" font-weight="700" fill="#182B49" letter-spacing="-1">Sermon</text>
+    
+    <!-- "IQ" in Bold Golden Sans -->
+    <text x="505" y="96" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="106" font-weight="800" fill="#BD8825" letter-spacing="1">IQ</text>
+    
+    <!-- Subtitle: "MINISTRY INTELLIGENCE" -->
+    <text x="153" y="138" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="19" font-weight="600" fill="#718096" letter-spacing="9.5">MINISTRY INTELLIGENCE</text>
+  </g>
+</svg>

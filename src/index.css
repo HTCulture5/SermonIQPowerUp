@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant+Garamond", serif;
+  --font-mono: "JetBrains+Mono", monospace;
+
+  --color-primary: #0A0E2A;
+  --color-accent: #D4AF37;
+  --color-accent-soft: rgba(212, 175, 55, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-primary text-white font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .grid-bg {
+    background-image: linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 54px 54px;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Touch scrolling utilities with zero visible scrollbars */
+  .no-scrollbar::-webkit-scrollbar,
+  .custom-scrollbar::-webkit-scrollbar,
+  .touch-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    height: 0px;
+  }
+  
+  .no-scrollbar,
+  .custom-scrollbar,
+  .touch-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Dynamic viewport height utility */
+  .h-dvh-screen {
+    height: 100vh;
+    height: var(--app-dvh, 100dvh);
+  }
+
+  .min-h-dvh-screen {
+    min-height: 100vh;
+    min-height: var(--app-dvh, 100dvh);
+  }
+}
+
+/* Custom animations for the glow dots */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2.2s ease infinite;
+}
+
+/* ==========================================================================
+   iOS Safari / Mobile WebKit Auto-Zoom Prevention Rule
+   iOS Safari automatically zooms the viewport when tapping any text field
+   whose computed font-size is < 16px. Enforcing font-size: 16px !important
+   permanently prevents auto-zooming without breaking WCAG pinch-zoom.
+   ========================================================================== */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  font-size: 16px !important;
+}
+

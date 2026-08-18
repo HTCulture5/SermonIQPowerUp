@@ -1,0 +1,292 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public user profile and pastor identity",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique authentication UID of user",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the pastor or congregant",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of user",
+          "maxLength": 128
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar photo URL",
+          "maxLength": 512
+        },
+        "role": {
+          "type": "string",
+          "description": "Role in church ministry",
+          "enum": ["pastor", "leader", "member", "guest"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp in ISO format"
+        }
+      },
+      "required": ["userId", "email", "createdAt"]
+    },
+    "ServiceReportEntity": {
+      "title": "ServiceReportEntity",
+      "description": "Archived SermonIQ pastoral intelligence report",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document identifier",
+          "maxLength": 128
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Auth UID of the pastor who generated the report",
+          "maxLength": 128
+        },
+        "authorEmail": {
+          "type": "string",
+          "description": "Email of authoring pastor",
+          "maxLength": 256
+        },
+        "serviceTitle": {
+          "type": "string",
+          "description": "Title or sermon topic of service",
+          "maxLength": 200
+        },
+        "summary": {
+          "type": "string",
+          "description": "Executive summary of service",
+          "maxLength": 10000
+        },
+        "engagementAnalysis": {
+          "type": "string",
+          "description": "Auditory dynamics and engagement metrics",
+          "maxLength": 10000
+        },
+        "themes": {
+          "type": "string",
+          "description": "Theological themes and doctrinal topics",
+          "maxLength": 10000
+        },
+        "scripture": {
+          "type": "string",
+          "description": "Scriptural analysis and references",
+          "maxLength": 10000
+        },
+        "congregationResponse": {
+          "type": "string",
+          "description": "Congregation response assessment",
+          "maxLength": 10000
+        },
+        "recommendations": {
+          "type": "string",
+          "description": "Strategic recommendations for ministerial follow-up",
+          "maxLength": 10000
+        },
+        "averageEngagement": {
+          "type": "number",
+          "description": "Average engagement score (0-100)"
+        },
+        "peakEngagement": {
+          "type": "number",
+          "description": "Peak engagement score (0-100)"
+        },
+        "durationSeconds": {
+          "type": "number",
+          "description": "Service duration in seconds"
+        },
+        "versesCount": {
+          "type": "number",
+          "description": "Number of detected scriptures"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of creation"
+        }
+      },
+      "required": ["authorId", "summary", "createdAt"]
+    },
+    "CarePrayerEntity": {
+      "title": "CarePrayerEntity",
+      "description": "Pastoral care prayer submission",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique prayer request ID",
+          "maxLength": 128
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Auth UID or anonymous identifier",
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "description": "Prayer category",
+          "enum": ["healing", "family", "anxiety", "guidance", "gratitude", "general"],
+          "maxLength": 64
+        },
+        "content": {
+          "type": "string",
+          "description": "Prayer request text",
+          "maxLength": 2000
+        },
+        "isAnonymous": {
+          "type": "boolean",
+          "description": "Whether requester chose anonymity"
+        },
+        "prayerCount": {
+          "type": "number",
+          "description": "Number of prayers offered"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp in ISO format"
+        }
+      },
+      "required": ["category", "content", "createdAt"]
+    },
+    "DonationRecord": {
+      "title": "DonationRecord",
+      "description": "Generosity tithing record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Donation ID",
+          "maxLength": 128
+        },
+        "donorId": {
+          "type": "string",
+          "description": "Auth UID or anonymous identifier",
+          "maxLength": 128
+        },
+        "amount": {
+          "type": "number",
+          "description": "Donation amount in USD"
+        },
+        "fund": {
+          "type": "string",
+          "description": "Designated ministry fund",
+          "maxLength": 128
+        },
+        "frequency": {
+          "type": "string",
+          "description": "One-time or recurring frequency",
+          "enum": ["one-time", "weekly", "bi-weekly", "monthly"],
+          "maxLength": 32
+        },
+        "isAnonymous": {
+          "type": "boolean",
+          "description": "Whether the gift was given anonymously"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp in ISO format"
+        }
+      },
+      "required": ["amount", "fund", "createdAt"]
+    },
+    "ChurchLeadEntity": {
+      "title": "ChurchLeadEntity",
+      "description": "Church signup lead submission",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Lead document identifier",
+          "maxLength": 128
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of pastor or church lead",
+          "maxLength": 100
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of pastor or church lead",
+          "maxLength": 100
+        },
+        "churchName": {
+          "type": "string",
+          "description": "Name of the church or ministry",
+          "maxLength": 200
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address for communications",
+          "maxLength": 256
+        },
+        "address": {
+          "type": "string",
+          "description": "Physical church address",
+          "maxLength": 300
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Contact phone number",
+          "maxLength": 50
+        },
+        "serviceDate": {
+          "type": "string",
+          "description": "Anticipated service launch date or day of week",
+          "maxLength": 100
+        },
+        "numberOfMembers": {
+          "type": "string",
+          "description": "Estimated congregational size",
+          "maxLength": 50
+        },
+        "selectedSubscription": {
+          "type": "string",
+          "description": "Chosen subscription tier (Starter, Growth, Enterprise)",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Lead pipeline status",
+          "enum": ["new", "contacted", "onboarded"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of signup"
+        }
+      },
+      "required": ["firstName", "lastName", "address", "phoneNumber", "serviceDate", "numberOfMembers", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile metadata"
+    },
+    "/service_reports/{reportId}": {
+      "schema": "ServiceReportEntity",
+      "description": "Pastoral service intelligence dossiers"
+    },
+    "/care_prayers/{prayerId}": {
+      "schema": "CarePrayerEntity",
+      "description": "Pastoral care prayer requests"
+    },
+    "/donations/{donationId}": {
+      "schema": "DonationRecord",
+      "description": "Ministry generosity logs"
+    },
+    "/church_leads/{leadId}": {
+      "schema": "ChurchLeadEntity",
+      "description": "Church signup leads and prospective onboarding records"
+    }
+  }
+}
